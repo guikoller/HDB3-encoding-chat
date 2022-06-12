@@ -15,14 +15,19 @@ client = socket()
 port = int(input('Enter the port server Running on : '))
 client.connect(('localhost', port))
 
-
 #window.mainloop
 
 def asciiEncode(message):
     values = []
     for char in message:
         values.append(ord(char))
-    return str(values)
+    return values
+
+def asciiDecode(message):
+    values = []
+    for char in message:
+        values.append(chr(char))
+    return ''.join(values)
 
 def receiveMessage():
     while True:
@@ -39,7 +44,7 @@ def receiveMessage():
 
 def sendMessage():
     while True:
-        message = (asciiEncode('{} : {}'.format(name, input(''))))
+        message = str(asciiEncode('{} : {}'.format(name, input(''))))
         client.send(message.encode())
 
 threading.Thread(target=receiveMessage).start()
