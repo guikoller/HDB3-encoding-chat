@@ -10,8 +10,8 @@ def asciiDecode(message):
         values.append(chr(char))
     return ''.join(values)
 
-msg = input("Digite a mensagem:\n")
-msg = asciiEncode(msg)
+def HDB3Encode(message):
+    return message
 
-print(msg)
-print(asciiDecode(msg))
+def HDB3Decode(message):
+    return message
