@@ -10,6 +10,20 @@ def asciiDecode(message):
         values.append(chr(char))
     return ''.join(values)
 
+def binaryEncode(array):
+    values = []
+    for i in array:
+        values.append(f'{i:08b}'.format(8))
+    return ''.join(values)
+
+def binaryDecode(string):
+    values = []
+    # splits the string into an array containing substrings with the fixed length of (size of 1 byte)
+    array =  [string[i:i+8] for i in range(0, len(string), 8)] 
+    for i in array:
+        values.append(int(i,2))
+    return values
+
 def HDB3Encode(message):
     message = AMIencoding(message)
     hdb3Message = message
