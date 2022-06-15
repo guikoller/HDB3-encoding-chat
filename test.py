@@ -20,15 +20,15 @@ ascii_to_binary = binaryEncode(text_to_ascii)
 print('Binary Encode:')
 print(ascii_to_binary)
 
-# binary_to_HDB3 = HDB3Encode(ascii_to_binary)
-# print('HDB3 encode: ')
-# print(binary_to_HDB3)
+binary_to_HDB3 = HDB3Encode(ascii_to_binary)
+print('HDB3 encode: ')
+print(binary_to_HDB3)
 
 #plotTwist(text_to_ascii, ascii_to_binary, 'Encode')
 
-# HDB3_to_binary = HDB3Decode(binary_to_HDB3)
-# print('HDB3 decode:')
-# print(HDB3_to_binary)
+HDB3_to_binary = HDB3Decode(binary_to_HDB3)
+print('HDB3 decode:')
+print(HDB3_to_binary)
 
 binary_to_ascii = binaryDecode(ascii_to_binary)
 print('Binary decode:')

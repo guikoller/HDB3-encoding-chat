@@ -12,27 +12,36 @@ def asciiDecode(message):
 
 def binaryEncode(array):
     values = []
+    bit_values = []
+    
     for i in array:
         values.append(f'{i:08b}'.format(8))
-    return ''.join(values)
+    
+    values = list(''.join(values))
+
+    for bit in values:
+        bit_values.append(int(bit))
+
+    return bit_values
 
 def binaryDecode(string):
     values = []
-    # splits the string into an array containing substrings with the fixed length of (size of 1 byte)
-    array =  [string[i:i+8] for i in range(0, len(string), 8)] 
+    array = [string[i:i+8] for i in range(0, len(string), 8)]
+    print(array)
     for i in array:
-        values.append(int(i,2))
+        values = ''.join(i)
+        #values.append(int(i,2))
     return values
 
 def HDB3Encode(message):
-    message = AMIencoding(message)
-    hdb3Message = message
+    amiMessage = AMIencoding(message)
+    hdb3Message = amiMessage
 
     zerosCounter = 0
     polarity = 0
     iterator = 0
 
-    for bit in message:
+    for bit in amiMessage:
         if bit == 0:
             zerosCounter += 1
 
@@ -47,8 +56,9 @@ def HDB3Encode(message):
                     hdb3Message[iterator] = hdb3Message[iterator]*(-1)
                     hdb3Message[iterator-3] = hdb3Message[iterator]
                     i = iterator + 1
-                    for i in len(hdb3Message):
+                    while i <= len(hdb3Message):
                         hdb3Message[i] = hdb3Message[i]*(-1)
+                        i += 1
 
                 polarity = hdb3Message[iterator]
 
@@ -60,23 +70,31 @@ def HDB3Encode(message):
     return hdb3Message
 
 def HDB3Decode(message):
+    # splits the string into an array containing substrings with the fixed length of (size of 1 byte)
+    # array =  [string[i:i+8] for i in range(0, len(string), 8)] 
+
     decodedMessage = message
     polarity = 0
     iterator = 0
 
-    for iterator in len(message):
-        if message[iterator] != 0:
-            if decodedMessage[iterator] == polarity:
+    while iterator < len(message):
+        if decodedMessage[iterator] != 0:
+            if message[iterator] == polarity:
                 i = iterator-3
-                for i in iterator:
+                while i <= iterator:
                     decodedMessage[i] = 0
+                    i += 1
 
-            polarity = message[iterator]
+            polarity = decodedMessage[iterator]
+        
+        iterator += 1
 
     iterator = 0
-    for iterator in len(decodedMessage):
+    while iterator < len(decodedMessage):
         if decodedMessage[iterator] == -1:
             decodedMessage[iterator] = 1
+
+        iterator += 1
 
     return decodedMessage
 
