@@ -3,6 +3,7 @@ from http import client
 import threading
 from socket import socket
 import tkinter as tk
+from encode_decode import encode, decode
 
 from numpy import *
 
@@ -16,18 +17,6 @@ port = int(input('Enter the port server Running on : '))
 client.connect(('localhost', port))
 
 #window.mainloop
-
-def asciiEncode(message):
-    values = []
-    for char in message:
-        values.append(ord(char))
-    return values
-
-def asciiDecode(message):
-    values = []
-    for char in message:
-        values.append(chr(char))
-    return ''.join(values)
 
 def receiveMessage():
     while True:
@@ -44,7 +33,8 @@ def receiveMessage():
 
 def sendMessage():
     while True:
-        message = str(asciiEncode('{} : {}'.format(name, input(''))))
+        message = '{} : {}'.format(name, input(''))
+        message = str(encode(message))
         client.send(message.encode())
 
 threading.Thread(target=receiveMessage).start()

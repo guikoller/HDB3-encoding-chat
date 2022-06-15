@@ -80,7 +80,6 @@ def HDB3Decode(message):
 
     return decodedMessage
 
-
 # Turning the binary string into a Alternate Mark Inversion(AMI) string
 def AMIencoding(binaryMessage):
     amiMessage = binaryMessage
@@ -95,3 +94,19 @@ def AMIencoding(binaryMessage):
         iterator += 1
 
     return amiMessage
+
+def encode(message):
+    print('encoding\n')
+    message = asciiEncode(message)
+    #print(message)
+    message = binaryEncode(message)
+    #print(message)
+    return message
+
+def decode(message):
+    print("decoding\n")
+    message = asciiDecode(message)
+    #print(message)
+    message = binaryDecode(message)
+    #print(message)
+    return message

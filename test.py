@@ -24,7 +24,7 @@ print(ascii_to_binary)
 # print('HDB3 encode: ')
 # print(binary_to_HDB3)
 
-# #plotTwist(text_to_ascii, ascii_to_HDB3, 'Encode')
+#plotTwist(text_to_ascii, ascii_to_binary, 'Encode')
 
 # HDB3_to_binary = HDB3Decode(binary_to_HDB3)
 # print('HDB3 decode:')
