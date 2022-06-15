@@ -25,6 +25,9 @@ def receiveMessage():
             if message == 'NICK':
                 client.send(f'{name}'.encode())
             else:
+                if '0' in message:
+                    message = decode(message)
+                
                 print(message)
         except:
             print('Error, Please Reconnect !')
@@ -34,7 +37,7 @@ def receiveMessage():
 def sendMessage():
     while True:
         message = '{} : {}'.format(name, input(''))
-        message = str(encode(message))
+        message = encode(message)
         client.send(message.encode())
 
 threading.Thread(target=receiveMessage).start()

@@ -96,17 +96,17 @@ def AMIencoding(binaryMessage):
     return amiMessage
 
 def encode(message):
-    print('encoding\n')
     message = asciiEncode(message)
-    #print(message)
+    print(message)
     message = binaryEncode(message)
-    #print(message)
+    print(message)
+    print('------------------------------------------------------------------')
     return message
 
 def decode(message):
-    print("decoding\n")
-    message = asciiDecode(message)
-    #print(message)
+    print(message)
     message = binaryDecode(message)
-    #print(message)
+    print(message)
+    message = asciiDecode(message)
+    print('------------------------------------------------------------------')
     return message
