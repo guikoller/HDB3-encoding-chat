@@ -25,7 +25,7 @@ def receiveMessage():
             if message == 'NICK':
                 client.send(f'{name}'.encode())
             else:
-                if '0' in message:
+                if '+' and '-' in message:
                     message = decode(message)
                 
                 print(message)
