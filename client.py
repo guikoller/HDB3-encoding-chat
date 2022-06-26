@@ -1,44 +1,69 @@
-from email import message
-from http import client
-import threading
-from socket import socket
+import socket
+import numpy as np
+import matplotlib.pyplot as plt
 import tkinter as tk
 from encode_decode import encode, decode
 
-from numpy import *
+window = tk.Tk()
+window.title('HDB3 Client')
+window.geometry('400x300')
 
-#window = tk.Tk()
-#window.title('CHAT')
-#window.geometry('400x300')
+# window.mainloop
 
-name = input('Please Enter your Name : ')
-client = socket()
-port = int(input('Enter the port server Running on : '))
-client.connect(('localhost', port))
+if __name__ == '__main__':
+    # pega as inforções do servidor para conexão
+    host = socket.gethostname() 
+    port = input() 
 
-#window.mainloop
+    # conecta com o servidor
+    client_socket = socket.socket()  
+    client_socket.connect((host, int(port)))     
 
-def receiveMessage():
     while True:
-        try:
-            message = client.recv(1024).decode()
-            if message == 'NICK':
-                client.send(f'{name}'.encode())
-            else:
-                if '+' and '-' in message:
-                    message = decode(message)
-                
-                print(message)
-        except:
-            print('Error, Please Reconnect !')
-            client.close()
-            break
+        # pega a mesagem do input e envia ao servidor
+        message = encode(input()) 
+        client_socket.send(message[0].encode()) 
 
-def sendMessage():
-    while True:
-        message = '{} : {}'.format(name, input(''))
-        message = encode(message)
-        client.send(message.encode())
+        # verifica se existe uma janela de gráfico aberta e fecha se existir
+        if plt.fignum_exists(True):
+            plt.close()
 
-threading.Thread(target=receiveMessage).start()
-threading.Thread(target=sendMessage).start()
+        # plota o gráfico da mensagem codificada
+        plt.rcParams["figure.autolayout"] = True
+        plt.title('Enviado')
+        index = list(np.arange(len(message[1])))
+        plt.bar(index, message[1])        
+        plt.show()
+
+        # espera até receber uma mesagem do servidor
+        data = client_socket.recv(1024).decode() 
+        
+        print('Recebido:')
+        print(data)
+
+        #tranforma string recebida em um vetor para a plotagem
+        bit_array = []
+        plot_data  = list(''.join(data))
+        for bit in plot_data:
+                if bit == '+':
+                    bit_array.append(1)
+                elif bit == '-':
+                    bit_array.append(-1)
+                else:
+                    bit_array.append(0)
+        # verifica se existe uma janela de gráfico aberta e fecha se existir
+        if plt.fignum_exists(True):
+            plt.close()
+
+        # plota o gráfico da mensagem codificada recebida
+        plt.rcParams["figure.autolayout"] = True
+        plt.title('Recebido')
+        index = list(np.arange(len(bit_array)))
+        plt.bar(index, bit_array)        
+        plt.show()
+        
+        # decoda a mesagem recebida
+        data = decode(data)
+        print(data)  
+
+    client_socket.close()

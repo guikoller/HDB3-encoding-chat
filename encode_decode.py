@@ -1,6 +1,3 @@
-from matplotlib.pyplot import text
-
-
 def asciiEncode(message):
     values = []
     for char in message:
@@ -84,7 +81,7 @@ def HDB3Encode(message):
             else:
                 string_array.append('0')
 
-    return ''.join(string_array)
+    return [''.join(string_array), hdb3Message]
 
 def HDB3Decode(message):
     # splits the string into an array containing substrings with the fixed length of (size of 1 byte)
@@ -108,7 +105,7 @@ def HDB3Decode(message):
         if decodedMessage[iterator] != 0:
             if bit_array[iterator] == polarity:
                 i = iterator-3
-                while i <= iterator:
+                while i < iterator:
                     decodedMessage[i] = 0
                     i += 1
 

@@ -2,13 +2,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 from encode_decode import asciiEncode, asciiDecode, HDB3Encode, HDB3Decode, binaryEncode, binaryDecode
 
-def plotTwist(data1, data2, msg):
-    plt.rcParams["figure.autolayout"] = True
-    fig, axs = plt.subplots(2)
-    fig.suptitle(msg)
-    axs[0].plot(data1)
-    axs[1].plot(data2)
-    plt.show()
+# def plot(data1, data2, data3, msg, title1, title2,title3):
+#     if plt.fignum_exists(True):
+#         plt.close()
+
+#     #setando o layout para 3 subplots
+#     plt.rcParams["figure.autolayout"] = True
+#     fig, axs = plt.subplots(3)
+#     # titulo geral
+#     fig.suptitle(msg)
+
+#     #printando os titulo o grafico de cada dataset
+#     index = list(np.arange(len(data1)))
+#     axs[0].set_title(title1)
+#     axs[0].plot(index, data1)
+    
+#     index = list(np.arange(len(data2)))
+#     axs[1].set_title(title2)
+#     axs[1].bar(index, data2)
+#     axs[1].hlines(y = 0, xmin = 0, xmax = len(data3), linewidth = 1)
+    
+#     index = list(np.arange(len(data3)))
+#     axs[2].set_title(title3)
+#     axs[2].bar(index, data3)
+#     axs[2].hlines(y = 0, xmin = 0, xmax = len(data3), linewidth = 1)
+
+    
+#     plt.show()
 
 text = input('Digite a mensagem\n')
 
@@ -22,9 +42,13 @@ print(ascii_to_binary)
 
 binary_to_HDB3 = HDB3Encode(ascii_to_binary)
 print('HDB3 encode: ')
-print(binary_to_HDB3)
+print(binary_to_HDB3[0])
+print(ascii_to_binary)
 
-HDB3_to_binary = HDB3Decode(binary_to_HDB3)
+print(ascii_to_binary)
+# plot(text_to_ascii, ascii_to_binary, binary_to_HDB3[1], 'Encode', 'ASCII', 'Binary', 'HDB3')
+
+HDB3_to_binary = HDB3Decode(binary_to_HDB3[0])
 print('HDB3 decode:')
 print(HDB3_to_binary)
 

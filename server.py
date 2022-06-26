@@ -1,53 +1,71 @@
-from socket import socket
-import threading
+import socket
+import numpy as np
+import matplotlib.pyplot as plt
+import tkinter as tk
+from encode_decode import encode, decode
 
-server = socket()
+if __name__ == '__main__':
+    
+    # informações para criar o servidor 
+    host = socket.gethostname()
+    port = input()  
 
-while True:
-    port = int(input("Enter the port Number : "))
-    try:
-        server.bind(('localhost', port))
-        break
-    except:
-        print('The port is already taken, Please try another port !')
-
-server.listen()
-
-clients = []
-namesDict = dict()
-
-# Braodcast a Message to all the clinets
-def broadCast(message):
-    for client in clients:
-        client.send(message)
-
-# To handle each client
-def handleClient(client):
+    # instancia o socket
+    server_socket = socket.socket()  
+    
+    # cria a conexão
+    server_socket.bind((host, int(port)))  
+    server_socket.listen(2)
+    conn, address = server_socket.accept()  
+    
+    # printa as informações do cliente quando conectado
+    print("Conexão de: " + str(address))
+    
     while True:
-        try:
-            message = client.recv(1024)
-            broadCast(message)
-        except:
-            clients.remove(client)
-            name = namesDict[client]
-            del namesDict[client]
-            client.close()
-            broadCast(f'{name} : Left the Room !')
-            break
+        message = conn.recv(1024).decode()
+        print("Recebido:")
+        # printa mesagem recebida
+        print(message)
+        
+        # tranforma string recebida em um vetor para a plotagem
+        bit_array = []
+        plot_data  = list(''.join(message))
+        for bit in plot_data:
+                if bit == '+':
+                    bit_array.append(1)
+                elif bit == '-':
+                    bit_array.append(-1)
+                else:
+                    bit_array.append(0)
+        
+        # verifica se existe uma janela de gráfico aberta e fecha se existir
+        if plt.fignum_exists(True):
+            plt.close()
 
-while True:
-    # Accepting a connection
-    client, address = server.accept()
-    print(f'Connected with {str(address)}')
+        # plota o gráfico da mensagem codificada recebida
+        plt.rcParams["figure.autolayout"] = True
+        plt.title('Recebido')
+        index = list(np.arange(len(bit_array)))
+        plt.bar(index, bit_array)        
+        plt.show()
 
-    # Taking info about the client
-    client.send('NICK'.encode())
-    name = client.recv(1024).decode()
-    clients.append(client)
-    namesDict[client] = name
+        # printa mesagem decodada
+        print(decode(message))
+        
+        # pega nova mesagem do input e envia para o cliente
+        data = input()
+        data = encode(data)
+        print(data)
+        conn.send(data[0].encode()) 
 
-    # Broadcasting to all clients that new client joined
-    broadCast(f'{name} : Joined the Room !'.encode())
-    client.send('Connected!'.encode())
+        if plt.fignum_exists(True):
+            plt.close()
 
-    threading.Thread(target=handleClient, args=(client,)).start()
+        # plota o gráfico da mensagem codificada
+        plt.rcParams["figure.autolayout"] = True
+        plt.title('Enviado')
+        index = list(np.arange(len(data[1])))
+        plt.bar(index, data[1])        
+        plt.show()
+
+    conn.close() 
