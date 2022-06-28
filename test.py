@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from encode_decode import asciiEncode, asciiDecode, HDB3Encode, HDB3Decode, binaryEncode, binaryDecode
+from encode_decode import *
 
 # def plot(data1, data2, data3, msg, title1, title2,title3):
 #     if plt.fignum_exists(True):
@@ -30,7 +30,24 @@ from encode_decode import asciiEncode, asciiDecode, HDB3Encode, HDB3Decode, bina
     
 #     plt.show()
 
+
+# from Crypto.Cipher import AES
+# obj = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
+# message = "The answer is no"
+# ciphertext = obj.encrypt(message)
+# ciphertext
+# obj2 = AES.new('This is a key123', AES.MODE_CBC, 'This is an IV456')
+# obj2.decrypt(ciphertext)
+
+
+# never use ECB in strong systems obviously
+
+# ...
 text = input('Digite a mensagem\n')
+
+text = caesar(text, 5, 1)
+print('CAESER encode:')
+print(text)
 
 text_to_ascii = asciiEncode(text)
 print('ASCII encode:')
@@ -59,3 +76,7 @@ print(binary_to_ascii)
 ascii_to_text = asciiDecode(binary_to_ascii)
 print('ASCII decode:')
 print(ascii_to_text)
+
+print('CAESER decode:')
+cesar = caesar(ascii_to_text, 5, 0)
+print(cesar)

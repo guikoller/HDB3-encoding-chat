@@ -1,3 +1,16 @@
+def caesar(data, key, mode):
+    alphabet = 'abcdefghijklmnopqrstuvwyzàáãâéêóôõíúçABCDEFGHIJKLMNOPQRSTUVWYZÀÁÃÂÉÊÓÕÍÚÇ'
+    new_data = ''
+    for c in data:
+        index = alphabet.find(c)
+        if index == -1:
+            new_data += c
+        else:
+            new_index = index + key if mode == 1 else index - key
+            new_index = new_index % len(alphabet)
+            new_data += alphabet[new_index:new_index+1]
+    return new_data
+
 def asciiEncode(message):
     values = []
     for char in message:
@@ -135,8 +148,9 @@ def AMIencoding(binaryMessage):
     return amiMessage
 
 def encode(message):
-    text_to_ascii = asciiEncode(message)
-    ascii_to_binary = binaryEncode(text_to_ascii)
+    text_to_ceaser = caesar(message,5,1)
+    ceaser_to_ascii = asciiEncode(text_to_ceaser)
+    ascii_to_binary = binaryEncode(ceaser_to_ascii)
     binary_to_HDB3 = HDB3Encode(ascii_to_binary)
 
     return binary_to_HDB3
@@ -144,6 +158,7 @@ def encode(message):
 def decode(message):
     HDB3_to_binary = HDB3Decode(message)
     binary_to_ascii = binaryDecode(HDB3_to_binary)
-    ascii_to_text = asciiDecode(binary_to_ascii)
+    ascii_to_ceaser = asciiDecode(binary_to_ascii)
+    ceaser_to_text = caesar(ascii_to_ceaser,5,0)
 
-    return ascii_to_text
+    return ceaser_to_text

@@ -1,5 +1,4 @@
 import socket
-import threading
 import numpy as np
 import matplotlib.pyplot as plt
 import tkinter as tk
@@ -26,7 +25,8 @@ class Client:
 
     def set_message(self, message):
         self.text_message = message
-        self.ascii_message = asciiEncode(self.text_message)
+        self.caesar = caesar(self.text_message,5,1)
+        self.ascii_message = asciiEncode(self.caeser)
         self.binary_message = binaryEncode(self.ascii_message)
         self.plot_message = self.binary_message.copy()
         self.encoded_message = HDB3Encode(self.plot_message)
@@ -39,7 +39,8 @@ class Client:
         self.encoded_message = hdb3_code
         self.binary_message = HDB3Decode(self.encoded_message[0])
         self.ascii_message = binaryDecode(self.binary_message)
-        self.text_message = asciiDecode(self.ascii_message)
+        self.caesar = asciiDecode(self.ascii_message)
+        self.text_message = caesar(self.caesar,5,0)
 
     def plot_graph(self,message):
         if plt.fignum_exists(True):
