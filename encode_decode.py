@@ -58,12 +58,9 @@ def HDB3Encode(message):
                     hdb3Message[iterator] = hdb3Message[iterator]*(-1)
                     hdb3Message[iterator-3] = hdb3Message[iterator]
                     i = iterator + 1
-                    while i <= len(hdb3Message):
-                        #try:
+                    while i < len(hdb3Message):
                         hdb3Message[i] = hdb3Message[i]*(-1)
                         i += 1
-                        #except:
-                            # print('cu seg fault')
 
                 polarity = hdb3Message[iterator]
 
@@ -105,7 +102,7 @@ def HDB3Decode(message):
         if decodedMessage[iterator] != 0:
             if bit_array[iterator] == polarity:
                 i = iterator-3
-                while i < iterator:
+                while i <= iterator:
                     decodedMessage[i] = 0
                     i += 1
 
