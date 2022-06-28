@@ -15,6 +15,7 @@ class Client:
 
         self.ascii_message = ''
         self.binary_message = ''
+        self.plot_message = ''
         self.encoded_message = ''
         self.text_message = ''
 
@@ -23,11 +24,16 @@ class Client:
     def connect(self):
         self.client_socket.connect((self.host, self.port))
 
-    def send_message(self,message):
+    def set_message(self, message):
         self.text_message = message
         self.ascii_message = asciiEncode(self.text_message)
         self.binary_message = binaryEncode(self.ascii_message)
-        self.encoded_message = HDB3Encode(self.binary_message)
+        self.plot_message = self.binary_message.copy()
+        self.encoded_message = HDB3Encode(self.plot_message)
+
+    def send_message(self):
+        self.plot_graph(self.plot_message)
+        self.client_socket.send(self.encoded_message[0].encode())
 
     def receive_message(self,hdb3_code):
         self.encoded_message = hdb3_code
@@ -40,8 +46,8 @@ class Client:
             plt.close()
         plt.rcParams["figure.autolayout"] = True
         plt.title('Enviado')
-        index = list(np.arange(len(message[1])))
-        plt.bar(index, message[1])
+        index = list(np.arange(len(message)))
+        plt.bar(index, message)
         plt.show()
 
 
