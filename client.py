@@ -6,130 +6,30 @@ import tkinter as tk
 from encode_decode import *
 # encode, decode
 
-client_socket = socket.socket()
 
-window = tk.Tk()
-window.title('HDB3 Client')
-window.minsize(200, 150)
-window.maxsize(200, 150)
+class Client:
+    def __init__(self):
+        self.client_socket = socket.socket()
+        self.host = ''
+        self.port = 0000
 
+        self.ascii_message = ''
+        self.binary_message = ''
+        self.encoded_message = ''
 
-def connect():
-    try:
-        # client_socket.connect((host.get(), int(port.get())))
-        connect_frame.lower(belowThis=message_frame)
-        message_frame.grid(column=0, row=0, sticky=(tk.W, tk.E, tk.S, tk.N))
-        window.minsize(400, 300)
-        window.maxsize(400, 300)
-    except TimeoutError:
-        print("Nao foi possivel conectar a" + host.get() + ":" + port.get())
+        self.is_connected = False
 
+    def connect(self):
+        self.client_socket.connect((self.host, self.port))
 
-def check_if_local():
-    if local_connection_toggle.get():
-        host_entry.configure(state='disabled')
-        host.set(socket.gethostname())
-    else:
-        host_entry.configure(state='normal')
-        host.set('')
-
+    # TDOD: implementar set e get do host e port e métodos com o código do koller:
+    #       - send_message
+    #       - receive_message
+    #       - plot_graph (?)
+    #       - outros que tiver
 
 # inicializa widgets da tela de conexao
-connect_frame = tk.Frame(window)
-connect_frame.grid(column=0, row=0)
 
-connect_main_label = tk.Label(connect_frame, text="Nova conexao")
-connect_main_label.grid(column=0, row=0, sticky=tk.W)
-window.columnconfigure(0, weight=1)
-window.rowconfigure(0, weight=1)
-
-local_connection_toggle = tk.BooleanVar()
-local_connection_checkbox = tk.Checkbutton(connect_frame, text="Conexao local", variable=local_connection_toggle,
-                                           command=check_if_local)
-local_connection_checkbox.grid(column=0, row=1, sticky=(tk.W, tk.E, tk.S, tk.N))
-
-host_entry_label = tk.Label(connect_frame, text="Host")
-host_entry_label.grid(column=0, row=2, sticky=(tk.W, tk.E))
-
-host = tk.StringVar()
-host_entry = tk.Entry(connect_frame, width=7, textvariable=host)
-host_entry.grid(column=1, row=2, sticky=(tk.W, tk.E, tk.S, tk.N))
-
-port_entry_label = tk.Label(connect_frame, text="Port")
-port_entry_label.grid(column=0, row=3, sticky=(tk.W, tk.E, tk.S, tk.N))
-
-port = tk.StringVar()
-port.set('0000')
-port_entry = tk.Entry(connect_frame, width=7, textvariable=port)
-port_entry.grid(column=1, row=3, sticky=(tk.W, tk.E, tk.S, tk.N))
-
-connect_button = tk.Button(connect_frame, command=connect, text='Conectar')
-connect_button.grid(column=1, row=4, sticky=(tk.W, tk.E, tk.S, tk.N))
-
-# #### inicializa widgets da tela de mensagem ####
-message_frame = tk.Frame(window)
-# message_frame.grid(column=0, row=0, sticky=(tk.W, tk.E, tk.S, tk.N))
-
-host_connected_label = tk.Label(message_frame, text=("Host: " + host.get()))
-host_connected_label.grid(column=0, row=0, sticky=(tk.W, tk.S, tk.N))
-
-port_connected_label = tk.Label(message_frame, text=("Port: " + port.get()))
-port_connected_label.grid(column=0, row=1, sticky=(tk.W, tk.S, tk.N))
-
-# #### lado de envio ####
-send_message_label = tk.Label(message_frame, text="Enviar Mensagem")
-send_message_label.grid(column=0, row=2, sticky=(tk.W, tk.S, tk.N))
-
-message_out_label = tk.Label(message_frame, text="Mensagem")
-message_out_label.grid(column=0, row=3, sticky=(tk.W, tk.S, tk.N))
-
-message_out = tk.StringVar()
-message_out_entry = tk.Entry(message_frame, width=10, textvariable=message_out)
-message_out_entry.grid(column=0, row=4, sticky=(tk.W, tk.S, tk.N))
-
-binary_out_label = tk.Label(message_frame, text="Binario")
-binary_out_label.grid(column=0, row=5, sticky=(tk.W, tk.S, tk.N))
-
-binary_out = tk.StringVar()
-binary_out_entry = tk.Entry(message_frame, width=10, textvariable=binary_out, state='readonly')
-binary_out_entry.grid(column=0, row=6, sticky=(tk.W, tk.S, tk.N))
-
-algorithm_out_label = tk.Label(message_frame, text="Algoritmo")
-algorithm_out_label.grid(column=0, row=7, sticky=(tk.W, tk.S, tk.N))
-
-algorithm_out = tk.StringVar()
-algorithm_out_entry = tk.Entry(message_frame, width=10, textvariable=algorithm_out, state='readonly')
-algorithm_out_entry.grid(column=0, row=8, sticky=(tk.W, tk.S, tk.N))
-
-send_button = tk.Button(message_frame, text="Enviar")
-send_button.grid(column=1, row=4, sticky=(tk.W, tk.S, tk.N))
-
-# #### lado de recebimento ####
-recieved_label = tk.Label(message_frame, text="Recebido")
-recieved_label.grid(column=3, row=2, sticky=(tk.W, tk.S, tk.N))
-
-algorithm_in_label = tk.Label(message_frame, text="Algoritmo")
-algorithm_in_label.grid(column=3, row=3, sticky=(tk.W, tk.S, tk.N))
-
-algorithm_in = tk.StringVar()
-algorithm_in_entry = tk.Entry(message_frame, width=10, textvariable=algorithm_in, state='readonly')
-algorithm_in_entry.grid(column=3, row=4, sticky=(tk.W, tk.S, tk.N))
-
-binary_in_label = tk.Label(message_frame, text="Binario")
-binary_in_label.grid(column=3, row=5, sticky=(tk.W, tk.S, tk.N))
-
-binary_in = tk.StringVar()
-binary_in_entry = tk.Entry(message_frame, width=10, textvariable=binary_in, state='readonly')
-binary_in_entry.grid(column=3, row=6, sticky=(tk.W, tk.S, tk.N))
-
-message_in_label = tk.Label(message_frame, text="Mensagem")
-message_in_label.grid(column=3, row=7, sticky=(tk.W, tk.S, tk.N))
-
-message_in = tk.StringVar()
-message_in_entry = tk.Entry(message_frame, width=10, textvariable=message_in, state='readonly')
-message_in_entry.grid(column=3, row=8, sticky=(tk.W, tk.S, tk.N))
-
-window.mainloop()
 
 # if __name__ == '__main__':
 #     # pega as inforções do servidor para conexão
