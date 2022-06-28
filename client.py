@@ -16,11 +16,34 @@ class Client:
         self.ascii_message = ''
         self.binary_message = ''
         self.encoded_message = ''
+        self.text_message = ''
 
         self.is_connected = False
 
     def connect(self):
         self.client_socket.connect((self.host, self.port))
+
+    def send_message(self,message):
+        self.text_message = message
+        self.ascii_message = asciiEncode(self.text_message)
+        self.binary_message = binaryEncode(self.ascii_message)
+        self.encoded_message = HDB3Encode(self.binary_message)
+
+    def receive_message(self,hdb3_code):
+        self.encoded_message = hdb3_code
+        self.binary_message = HDB3Decode(self.encoded_message[0])
+        self.ascii_message = binaryDecode(self.binary_message)
+        self.text_message = asciiDecode(self.ascii_message)
+
+    def plot_graph(self,message):
+        if plt.fignum_exists(True):
+            plt.close()
+        plt.rcParams["figure.autolayout"] = True
+        plt.title('Enviado')
+        index = list(np.arange(len(message[1])))
+        plt.bar(index, message[1])
+        plt.show()
+
 
     # TDOD: implementar set e get do host e port e métodos com o código do koller:
     #       - send_message
