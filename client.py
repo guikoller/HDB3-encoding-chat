@@ -77,5 +77,6 @@ class Client:
         plt.rcParams["figure.autolayout"] = True
         plt.title(title)
         index = list(np.arange(len(message)))
+        plt.hlines(y = 0, xmin = 0, xmax = len(message), linewidth = 1)
         plt.bar(index, message)
         plt.show()
