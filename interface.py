@@ -1,7 +1,5 @@
 import tkinter as tk
 from client import *
-
-
 class Interface:
     def __init__(self):
         self.window = tk.Tk()
@@ -98,7 +96,7 @@ class Interface:
     def check_if_local(self):
         if self.local_connection_toggle.get():
             self.host_entry.configure(state='disabled')
-            self.host.set(socket.gethostname())
+            self.host.set(get_ip())
         else:
             self.host_entry.configure(state='normal')
             self.host.set('')
@@ -111,7 +109,8 @@ class Interface:
         if self.create_connection_toggle.get():
             self.local_connection_checkbutton.config(state='disabled')
             self.host_entry.configure(state='disabled')
-            self.host.set(socket.gethostname())
+            self.host.set(get_ip())
+            print('LOCAL: ', get_ip())
         else:
             self.local_connection_checkbutton.config(state='normal')
             self.host_entry.configure(state='normal')
