@@ -8,9 +8,9 @@ class Interface:
         self.window.title('HDB3 Client')
         self.window.columnconfigure(0, weight=1)
         self.window.rowconfigure(0, weight=1)
-        self.window.geometry('758x450')
-        self.window.minsize(758, 450)
-        self.window.maxsize(758, 450)
+        self.window.geometry('205x160')
+        self.window.minsize(205, 160)
+        self.window.maxsize(205, 160)
 
         self.create_connection_toggle = tk.BooleanVar()
         self.local_connection_toggle = tk.BooleanVar()
@@ -88,6 +88,9 @@ class Interface:
                 self.client.connect()
             self.connect_frame.destroy()
             self.init_message_frame()
+            self.window.geometry('758x450')
+            self.window.minsize(758, 450)
+            self.window.maxsize(758, 450)
 
         except TimeoutError:
             print("Nao foi possivel conectar a" + self.client.host + ":" + str(self.client.port))
