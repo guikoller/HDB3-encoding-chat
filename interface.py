@@ -82,7 +82,10 @@ class Interface:
 
     def send_message(self):
         message = self.message_text.get('0.0', tk.END)
-        self.client.set_message(message)
+        self.client.set_message_to_send(message)
 
         self.client.send_message()
-        self.recieve_message()
+        self.receive_message()
+
+    def receive_message(self):
+        self.client.receive_message()

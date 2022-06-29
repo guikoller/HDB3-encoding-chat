@@ -98,7 +98,7 @@ def HDB3Decode(message):
     # array =  [string[i:i+8] for i in range(0, len(string), 8)] 
     
     bit_array = []
-    message  = list(''.join(message))
+    message = list(''.join(message))
     for bit in message:
             if bit == '+':
                 bit_array.append(1)

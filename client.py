@@ -23,7 +23,7 @@ class Client:
     def connect(self):
         self.client_socket.connect((self.host, self.port))
 
-    def set_message(self, message):
+    def set_message_to_send(self, message):
         self.text_message = message
         self.caesar = caesar(self.text_message,5,1)
         self.ascii_message = asciiEncode(self.caeser)
@@ -35,7 +35,24 @@ class Client:
         self.plot_graph(self.plot_message)
         self.client_socket.send(self.encoded_message[0].encode())
 
-    def receive_message(self,hdb3_code):
+    def receive_message(self):
+        hdb3_code = self.client_socket.recv(1024).decode()
+
+        bit_array = []
+        plot_data = list(''.join(hdb3_code))
+        for bit in plot_data:
+            if bit == '+':
+                bit_array.append(1)
+            elif bit == '-':
+                bit_array.append(-1)
+            else:
+                bit_array.append(0)
+
+        if plt.fignum_exists(True):
+            plt.close()
+
+        self.plot_graph(plot_data)
+
         self.encoded_message = hdb3_code
         self.binary_message = HDB3Decode(self.encoded_message[0])
         self.ascii_message = binaryDecode(self.binary_message)
