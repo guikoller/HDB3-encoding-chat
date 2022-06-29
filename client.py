@@ -38,7 +38,7 @@ class Client:
         self.encoded_message = HDB3Encode(self.plot_message)
 
     def send_message(self):
-        self.plot_graph(self.plot_message)
+        self.plot_graph(self.plot_message, 'Enviado')
         if self.is_host:
             self.conn.send(self.encoded_message[0].encode())
         else:
@@ -63,7 +63,7 @@ class Client:
         if plt.fignum_exists(True):
             plt.close()
 
-        self.plot_graph(bit_array)
+        self.plot_graph(bit_array, 'Recebido')
 
         self.encoded_message = hdb3_code
         self.binary_message = HDB3Decode(self.encoded_message)
@@ -71,11 +71,11 @@ class Client:
         self.caesar = asciiDecode(self.ascii_message)
         self.text_message = caesar(self.caesar, 5, 0)
 
-    def plot_graph(self,message):
+    def plot_graph(self, message, title):
         if plt.fignum_exists(True):
             plt.close()
         plt.rcParams["figure.autolayout"] = True
-        plt.title('Enviado')
+        plt.title(title)
         index = list(np.arange(len(message)))
         plt.bar(index, message)
         plt.show()
